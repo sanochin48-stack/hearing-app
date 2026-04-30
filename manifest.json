@@ -1,0 +1,16 @@
+{
+  "name": "247 ヒアリング",
+  "short_name": "247",
+  "description": "販売前ヒアリングアプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f4f0",
+  "theme_color": "#1D9E75",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
