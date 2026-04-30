@@ -45,6 +45,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 .dot:nth-child(2) { animation-delay: 0.18s; }
 .dot:nth-child(3) { animation-delay: 0.36s; }
 @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+.step-label { font-size: 11px; color: #aaa; letter-spacing: 0.06em; align-self: flex-start; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -62,17 +63,99 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 let config = {
   product: { name: '247', copy: 'つけているだけで血流をサポート' },
   flow: [
-    { id:'greeting', message:'こんにちは！\n少しだけ教えていただけますか？\n最近、体の調子はいかがですか？', key:'condition', choices:[{label:'良い',next:'good_condition'},{label:'まあまあ',next:'ask_symptom'},{label:'あまり良くない',next:'ask_symptom'}] },
-    { id:'good_condition', message:'それは良かったです！\n体調が良くても、気になることはありますか？', key:'symptom', choices:[{label:'手足の冷えが気になる',next:'ask_duration'},{label:'疲れが取れにくい',next:'ask_duration'},{label:'肩こり・首こりがある',next:'ask_duration'},{label:'特に気になることはない',next:'ask_lifestyle'}] },
-    { id:'ask_symptom', message:'そうなんですね。\n特に気になっていることはありますか？', key:'symptom', choices:[{label:'手足の冷えが気になる',next:'ask_duration'},{label:'疲れが取れにくい',next:'ask_duration'},{label:'肩こり・首こりがある',next:'ask_duration'},{label:'頭が重い・頭痛がある',next:'ask_duration'}] },
-    { id:'ask_duration', message:'それはいつ頃からですか？', key:'duration', choices:[{label:'最近になってから',next:'ask_lifestyle'},{label:'半年以上前から',next:'ask_lifestyle'},{label:'ずっと前から',next:'ask_lifestyle'}] },
-    { id:'ask_lifestyle', message:'生活習慣で、心当たりはありますか？', key:'lifestyle', choices:[{label:'睡眠が不規則・不足しがち',next:'ask_effort'},{label:'運動する機会が少ない',next:'ask_effort'},{label:'食事が不規則になりがち',next:'ask_effort'},{label:'ストレスが多い',next:'ask_effort'}] },
-    { id:'ask_effort', message:'今まで、自分で何か試してみたことはありますか？', key:'effort', choices:[{label:'サプリメントを飲んでいる・飲んでいた',next:'ask_result'},{label:'運動を始めようとしたことがある',next:'ask_result'},{label:'食事を気をつけようとしたことがある',next:'ask_result'},{label:'特に何もしていない',next:'proposal'}] },
-    { id:'ask_result', message:'そうなんですね。\nやってみて、実感としてはいかがでしたか？', key:'result', choices:[{label:'効果はあったけど、続かなかった',next:'proposal'},{label:'あまり変わらなかった',next:'proposal'},{label:'やったりやめたりしてしまった',next:'proposal'}] },
-    { id:'proposal', isProposal:true }
+
+    // ① 健康への関心確認
+    {
+      id: 'greeting',
+      message: 'こんにちは！\n少しだけ聞かせてもらえますか？\n\n健康について、日頃から気にしている方ですか？',
+      key: 'interest',
+      choices: [
+        { label: 'はい、気にしています', next: 'ask_effort' },
+        { label: 'あまり気にしていない', next: 'reframe' },
+      ]
+    },
+
+    // ① 関心なし → 切り口を変える
+    {
+      id: 'reframe',
+      message: 'そうなんですね。\n\n最近、疲れやすいとか、体が重いと感じることはありますか？',
+      key: 'reframe_answer',
+      choices: [
+        { label: 'そう言われると、ある', next: 'ask_effort' },
+        { label: 'あまりない', next: 'reframe2' },
+      ]
+    },
+
+    // ① 関心なし → さらに切り口を変える
+    {
+      id: 'reframe2',
+      message: 'それは良かったです！\n\nただ、年齢とともに体の変化って少しずつ出てくるもので。\n\n例えば、冷えとか、睡眠の質が落ちたとか、気になることは何かありますか？',
+      key: 'reframe2_answer',
+      choices: [
+        { label: '言われてみれば、冷えが気になる', next: 'ask_effort' },
+        { label: '睡眠がちょっと浅いかも', next: 'ask_effort' },
+        { label: '特にない', next: 'ask_effort' },
+      ]
+    },
+
+    // ② 取り組みの確認
+    {
+      id: 'ask_effort',
+      message: '健康のために、何か取り組んでいることはありますか？',
+      key: 'effort',
+      choices: [
+        { label: 'はい、やっています', next: 'ask_effort_hard' },
+        { label: 'いいえ、特にしていない', next: 'ask_why_not' },
+      ]
+    },
+
+    // ② 取り組んでいる → 面倒かどうか確認
+    {
+      id: 'ask_effort_hard',
+      message: 'えらいですね！\n\nそれって、毎日続けるのは大変じゃないですか？',
+      key: 'effort_hard',
+      choices: [
+        { label: '正直、面倒なこともある', next: 'proposal' },
+        { label: '習慣になっているので大丈夫', next: 'proposal_easy' },
+      ]
+    },
+
+    // ② していない → なぜか確認
+    {
+      id: 'ask_why_not',
+      message: 'そうなんですね。\n\n何かしたいとは思っているけど、面倒だったりしますか？',
+      key: 'why_not',
+      choices: [
+        { label: 'そう、なかなか続かなくて', next: 'proposal' },
+        { label: 'そもそも何をすればいいかわからない', next: 'proposal' },
+        { label: '特に何もしなくていいと思っている', next: 'proposal_light' },
+      ]
+    },
+
+    // ③ 提案（面倒・続かない系）
+    {
+      id: 'proposal',
+      isProposal: true,
+      proposalType: 'main'
+    },
+
+    // ③ 提案（習慣化できている人向け・プラスアルファ訴求）
+    {
+      id: 'proposal_easy',
+      isProposal: true,
+      proposalType: 'plus'
+    },
+
+    // ③ 提案（関心薄い人向け・ライト訴求）
+    {
+      id: 'proposal_light',
+      isProposal: true,
+      proposalType: 'light'
+    },
   ]
 };
 
+// ===== 更新ボタン =====
 async function updateContent() {
   const btn = document.getElementById('update-btn');
   const status = document.getElementById('update-status');
@@ -90,103 +173,190 @@ async function updateContent() {
   }
 }
 
+// ===== ユーティリティ =====
 const app = document.getElementById('app');
 const answers = {};
 const getFlowMap = () => { const m={}; config.flow.forEach(f=>m[f.id]=f); return m; };
 
 function addBubble(text, type) {
   return new Promise(r => setTimeout(() => {
-    const b = document.createElement('div'); b.className='bubble '+type; b.textContent=text;
+    const b = document.createElement('div');
+    b.className = 'bubble ' + type;
+    b.textContent = text;
     app.appendChild(b); scroll(); r();
   }, 0));
 }
 
-function showTyping(ms=650) {
+function showTyping(ms=700) {
   return new Promise(r => {
-    const d=document.createElement('div'); d.className='dot-row'; d.id='typing';
-    d.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-    app.appendChild(d); scroll(); setTimeout(()=>{d.remove();r();},ms);
+    const d = document.createElement('div');
+    d.className = 'dot-row'; d.id = 'typing';
+    d.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    app.appendChild(d); scroll();
+    setTimeout(() => { d.remove(); r(); }, ms);
   });
 }
 
 function scroll() { window.scrollTo(0, document.body.scrollHeight); }
 
-function buildReason() {
-  const name = config.product?.name||'247';
-  const parts=[];
-  if(answers.symptom) parts.push(`「${answers.symptom}」というお悩み`);
-  if(answers.duration) parts.push(`${answers.duration}続いている状態`);
-  if(answers.lifestyle) parts.push(`${answers.lifestyle}という生活習慣`);
-  if(answers.result) parts.push(`自分で試しても${answers.result}という経験`);
-  if(answers.effort==='特に何もしていない') parts.push('まだ何も試していない状態');
-  if(!parts.length) return `今の体の状態を考えると、${name}がお役に立てると思います。`;
-  return parts.join('、')+`に対して、${name}はつけているだけで血流をサポートできるので、生活を変えずに続けられます。`;
+// ===== 提案メッセージ =====
+function getProposalMessage(type) {
+  if (type === 'plus') {
+    return 'すごいですね、ちゃんと続けられているんですね。\n\nそれに加えて、着けているだけでサポートできるものがあったら、もっと楽になりませんか？\n\n着脱もとっても簡単なので、今の習慣のじゃまをしません。';
+  }
+  if (type === 'light') {
+    return '確かに、無理してやる必要はないですよね。\n\nただ、着けているだけでいいし、着脱もとっても簡単なものがあるとしたら、試してみる価値はあると思いませんか？';
+  }
+  return '続けるのって、やっぱり大変ですよね。\n\nだったら、着けているだけでいいものがあったらどうですか？\n\n着脱もとっても簡単なので、努力も面倒もいりません。';
 }
 
 function buildOpeningLine() {
-  const s=answers.symptom||'体の不調';
-  const r=answers.result||(answers.effort==='特に何もしていない'?'まだ何も試していない':null);
-  if(r) return `「${s}が気になっていて、${r}んですね。血流が関係していることが多いので、今から一緒に確認してみましょう」`;
-  return `「${s}が気になっているとのことで、血流が関係していることが多いので、今から一緒に確認してみましょう」`;
+  const effort = answers.effort === 'はい、やっています' ? '何か取り組んでいる' : '特に取り組んでいない';
+  const hard = answers.effort_hard || answers.why_not || '';
+  return `「${effort}方で、${hard ? hard + 'とのことでした。' : ''}着けるだけで続けられるものをご提案しています。測定で実際の変化を確認してみましょう」`;
 }
 
-async function showProposal() {
-  const p=config.product||{name:'247',copy:'つけているだけで血流をサポート'};
+// ===== 提案表示 =====
+async function showProposal(type='main') {
+  const p = config.product || { name: '247', copy: 'つけているだけで血流をサポート' };
+
   await showTyping(800);
-  await addBubble('ありがとうございます。\nお話を聞かせていただいて、ぴったりのものがあります。','ai');
+  await addBubble(getProposalMessage(type), 'ai');
   await showTyping(600);
-  const card=document.createElement('div'); card.className='proposal-card';
-  card.innerHTML=`<div class="proposal-label">あなたへのご提案</div><div class="proposal-name">${p.name}</div><div class="proposal-copy">${p.copy}</div><div class="proposal-reason"><div class="proposal-reason-label">なぜあなたに合っているか</div>${buildReason()}</div>`;
+
+  const card = document.createElement('div');
+  card.className = 'proposal-card';
+  card.innerHTML = `
+    <div class="proposal-label">ご提案</div>
+    <div class="proposal-name">${p.name}</div>
+    <div class="proposal-copy">${p.copy}</div>
+    <div class="proposal-reason">
+      <div class="proposal-reason-label">ポイント</div>
+      着けるだけ。外すのも簡単。努力も面倒もいりません。
+    </div>
+  `;
   app.appendChild(card); scroll();
+
   await showTyping(700);
-  await addBubble('実際に体でどう変わるか、\n確認してみませんか？\n測定すると、今の血流の状態がご自身の目で確認できます。','ai');
-  setTimeout(()=>{
-    const btn=document.createElement('button'); btn.className='measure-btn'; btn.textContent='確認のために測定してみる';
-    btn.onclick=()=>{btn.remove();showHandover();}; app.appendChild(btn); scroll();
-  },400);
-}
+  await addBubble('試してみませんか？', 'ai');
 
-async function showHandover() {
-  await addBubble('確認してみます','user');
-  await showTyping(600);
-  await addBubble('ありがとうございます！\nでは担当者をお呼びします。\nそのままお待ちください。','ai');
-  setTimeout(()=>{
-    const labels={condition:'体調',symptom:'気になる症状',duration:'いつから',lifestyle:'生活習慣',effort:'自力での取り組み',result:'取り組みの結果'};
-    const card=document.createElement('div'); card.className='summary-card';
-    card.innerHTML='<h3>販売員へのサマリー</h3>';
-    Object.keys(labels).forEach(key=>{
-      if(answers[key]){const item=document.createElement('div');item.className='summary-item';item.innerHTML=`<div class="summary-label">${labels[key]}</div><div class="summary-value">${answers[key]}</div>`;card.appendChild(item);}
+  setTimeout(() => {
+    const div = document.createElement('div');
+    div.className = 'choices';
+    [{label:'はい、試してみます', go: true},{label:'もう少し聞かせてください', go: false}].forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = c.label;
+      btn.onclick = async () => {
+        div.remove();
+        await addBubble(c.label, 'user');
+        if (c.go) {
+          await showMeasure();
+        } else {
+          await showTyping(600);
+          await addBubble('着けているだけで体の血流をサポートします。\n効果の確認のために測定できる機器もあります。\n実際に試してみるのが一番わかりやすいですよ。', 'ai');
+          await showTyping(500);
+          await showMeasure();
+        }
+      };
+      div.appendChild(btn);
     });
-    const sc=document.createElement('div');
-    sc.style.cssText='margin-top:12px;background:#fff8f0;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;color:#1a1a1a;';
-    sc.innerHTML=`<div style="font-size:11px;color:#e07020;font-weight:600;margin-bottom:4px;">最初のひと言</div>${buildOpeningLine()}`;
-    card.appendChild(sc);
-    const btn=document.createElement('button');btn.id='restart-btn';btn.textContent='最初からやり直す';btn.onclick=restart;card.appendChild(btn);
-    app.appendChild(card);scroll();
-  },400);
+    app.appendChild(div); scroll();
+  }, 400);
 }
 
+// ===== ④ 測定誘導 =====
+async function showMeasure() {
+  await showTyping(600);
+  await addBubble('実際に変化があるかどうか、確認できる機器があります。\n一緒に見てみましょう！', 'ai');
+
+  setTimeout(() => {
+    const btn = document.createElement('button');
+    btn.className = 'measure-btn';
+    btn.textContent = '測定してみる';
+    btn.onclick = () => { btn.remove(); showHandover(); };
+    app.appendChild(btn); scroll();
+  }, 400);
+}
+
+// ===== 販売員サマリー =====
+async function showHandover() {
+  await addBubble('測定してみます', 'user');
+  await showTyping(600);
+  await addBubble('ありがとうございます！\nでは担当者をお呼びします。\nそのままお待ちください。', 'ai');
+
+  setTimeout(() => {
+    const labels = {
+      interest: '健康への関心',
+      reframe_answer: '疲れ・体の重さ',
+      reframe2_answer: '気になること',
+      effort: '取り組み状況',
+      effort_hard: '継続の負担感',
+      why_not: '取り組まない理由',
+    };
+    const card = document.createElement('div');
+    card.className = 'summary-card';
+    card.innerHTML = '<h3>販売員へのサマリー</h3>';
+    Object.keys(labels).forEach(key => {
+      if (answers[key]) {
+        const item = document.createElement('div');
+        item.className = 'summary-item';
+        item.innerHTML = `<div class="summary-label">${labels[key]}</div><div class="summary-value">${answers[key]}</div>`;
+        card.appendChild(item);
+      }
+    });
+    const sc = document.createElement('div');
+    sc.style.cssText = 'margin-top:12px;background:#fff8f0;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;color:#1a1a1a;';
+    sc.innerHTML = `<div style="font-size:11px;color:#e07020;font-weight:600;margin-bottom:4px;">最初のひと言</div>${buildOpeningLine()}`;
+    card.appendChild(sc);
+    const btn = document.createElement('button');
+    btn.id = 'restart-btn';
+    btn.textContent = '最初からやり直す';
+    btn.onclick = restart;
+    card.appendChild(btn);
+    app.appendChild(card); scroll();
+  }, 400);
+}
+
+// ===== 会話エンジン =====
 function addChoices(step) {
-  const div=document.createElement('div'); div.className='choices';
-  step.choices.forEach(c=>{
-    const btn=document.createElement('button'); btn.className='choice-btn'; btn.textContent=c.label;
-    btn.onclick=async()=>{div.remove();if(step.key)answers[step.key]=c.label;await addBubble(c.label,'user');await goTo(c.next);};
+  const div = document.createElement('div');
+  div.className = 'choices';
+  step.choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c.label;
+    btn.onclick = async () => {
+      div.remove();
+      if (step.key) answers[step.key] = c.label;
+      await addBubble(c.label, 'user');
+      await goTo(c.next);
+    };
     div.appendChild(btn);
   });
   app.appendChild(div); scroll();
 }
 
 async function goTo(id) {
-  const step=getFlowMap()[id]; if(!step)return;
-  if(step.isProposal){await showProposal();return;}
-  await showTyping(600); await addBubble(step.message,'ai'); addChoices(step);
+  const step = getFlowMap()[id];
+  if (!step) return;
+  if (step.isProposal) { await showProposal(step.proposalType || 'main'); return; }
+  await showTyping(650);
+  await addBubble(step.message, 'ai');
+  addChoices(step);
 }
 
-function restart() { Object.keys(answers).forEach(k=>delete answers[k]); app.innerHTML=''; init(); }
+function restart() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  app.innerHTML = '';
+  init();
+}
 
 async function init() {
-  const first=getFlowMap()['greeting'];
-  await showTyping(500); await addBubble(first.message,'ai'); addChoices(first);
+  const first = getFlowMap()['greeting'];
+  await showTyping(500);
+  await addBubble(first.message, 'ai');
+  addChoices(first);
 }
 
 init();
