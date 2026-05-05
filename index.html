@@ -288,7 +288,9 @@ async function showProductCard() {
     const btn = document.createElement('button');
     btn.className = 'measure-btn';
     btn.textContent = '体温の変化を見てみます';
-    btn.onclick = () => { btn.remove(); showHandover(); };
+    btn.onclick = () => {
+      window.location.href = 'taion_app.html';
+    };
     app.appendChild(btn); scroll();
   }, 400);
 }
