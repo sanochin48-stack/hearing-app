@@ -8,8 +8,8 @@
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="247">
-<title>247 ヒアリング</title>
+<meta name="apple-mobile-web-app-title" content="PZ">
+<title>PZ ヒアリング</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #f5f4f0; min-height: 100vh; }
@@ -25,14 +25,31 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 .choices { display: flex; flex-direction: column; gap: 9px; width: 92%; }
 .choice-btn { background: #fff; border: 1px solid #e0ddd6; border-radius: 13px; padding: 12px 17px; font-size: 15px; color: #1a1a1a; cursor: pointer; text-align: left; line-height: 1.5; font-family: inherit; transition: border-color 0.15s, background 0.15s; }
 .choice-btn:hover, .choice-btn:active { background: #f0faf6; border-color: #1D9E75; }
-.proposal-card { background: #fff; border: 2px solid #1D9E75; border-radius: 16px; padding: 1.4rem; width: 92%; animation: fadeIn 0.4s ease; }
-.proposal-label { font-size: 11px; font-weight: 600; color: #1D9E75; letter-spacing: 0.1em; margin-bottom: 8px; }
-.proposal-name { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
-.proposal-copy { font-size: 14px; color: #555; margin-bottom: 14px; line-height: 1.6; }
-.proposal-reason { background: #f5fdf9; border-radius: 10px; padding: 12px 14px; font-size: 14px; color: #1a1a1a; line-height: 1.7; }
-.proposal-reason-label { font-size: 11px; color: #1D9E75; font-weight: 600; margin-bottom: 4px; }
+
+/* 提案テーザー */
+.teaser-card { background: #fff; border-radius: 14px; padding: 1.2rem 1.4rem; width: 92%; box-shadow: 0 1px 4px rgba(0,0,0,0.09); animation: fadeIn 0.4s ease; }
+.teaser-text { font-size: 16px; font-weight: 600; color: #1a1a1a; line-height: 1.6; margin-bottom: 14px; }
+.teaser-btn { background: #1D9E75; color: #fff; border: none; border-radius: 11px; padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; width: 100%; }
+.teaser-btn:active { opacity: 0.85; }
+
+/* 製品カード */
+.product-card { background: #fff; border: 2px solid #1D9E75; border-radius: 16px; padding: 1.4rem; width: 92%; animation: fadeIn 0.4s ease; }
+.product-badge { display: inline-block; background: #1D9E75; color: #fff; font-size: 11px; font-weight: 600; border-radius: 6px; padding: 3px 10px; margin-bottom: 10px; letter-spacing: 0.06em; }
+.product-series { font-size: 13px; color: #888; margin-bottom: 2px; }
+.product-name { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+.product-copy { font-size: 14px; color: #555; margin-bottom: 14px; line-height: 1.6; }
+.product-points { background: #f5fdf9; border-radius: 10px; padding: 12px 14px; }
+.product-points-label { font-size: 11px; color: #1D9E75; font-weight: 600; margin-bottom: 6px; }
+.product-point { font-size: 14px; color: #1a1a1a; line-height: 1.7; padding: 2px 0; }
+.product-point::before { content: '・'; color: #1D9E75; }
+.product-sub { margin-top: 12px; background: #f9f9f7; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #666; line-height: 1.6; }
+.product-sub-label { font-size: 11px; color: #aaa; font-weight: 600; margin-bottom: 4px; }
+
+/* 測定ボタン */
 .measure-btn { background: #1D9E75; color: #fff; border: none; border-radius: 13px; padding: 15px 20px; font-size: 16px; font-weight: 600; cursor: pointer; width: 92%; font-family: inherit; margin-top: 4px; animation: fadeIn 0.4s ease; }
 .measure-btn:active { opacity: 0.85; }
+
+/* サマリー */
 .summary-card { background: #fff; border: 1px solid #e0ddd6; border-radius: 14px; padding: 1.25rem; width: 92%; animation: fadeIn 0.4s ease; }
 .summary-card h3 { font-size: 11px; font-weight: 600; color: #999; margin-bottom: 10px; letter-spacing: 0.08em; }
 .summary-item { font-size: 14px; color: #1a1a1a; padding: 7px 0; border-bottom: 1px solid #f0ede8; }
@@ -40,6 +57,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 .summary-label { font-size: 11px; color: #888; margin-bottom: 2px; }
 .summary-value { font-weight: 500; }
 #restart-btn { margin-top: 1rem; background: transparent; border: 1px solid #d0cdc6; border-radius: 10px; padding: 10px 20px; font-size: 14px; color: #666; cursor: pointer; font-family: inherit; display: block; width: 100%; }
+
 .dot-row { display: flex; gap: 5px; padding: 14px 18px; background: #fff; border-radius: 4px 18px 18px 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.09); width: fit-content; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: #bbb; animation: bounce 1.1s infinite; }
 .dot:nth-child(2) { animation-delay: 0.18s; }
@@ -49,7 +67,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 </head>
 <body>
 <div id="header">
-  <span id="header-title">247 ヒアリング</span>
+  <span id="header-title">PZ ヒアリング</span>
   <div style="display:flex;align-items:center;gap:8px;">
     <span id="update-status">更新しました</span>
     <button id="update-btn" onclick="updateContent()">更新</button>
@@ -60,9 +78,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
 let config = {
-  product: { name: '247', copy: 'つけているだけで血流をサポート' },
+  products: {
+    anklet:   { name: 'PZアンクレット', series: 'PZシリーズ', copy: '着けているだけで回復をサポート', recommend: '冷えが気になる方に特におすすめ', points: ['着けるだけ、外すのも簡単', '足首から全身の血流をサポート', '24時間つけっぱなしでOK'] },
+    bracelet: { name: 'PZブレスレット', series: 'PZシリーズ', copy: '着けているだけで回復をサポート', recommend: '疲れ・肩こりが気になる方に特におすすめ', points: ['着けるだけ、外すのも簡単', '手首から上半身の血流をサポート', '24時間つけっぱなしでOK'] },
+    ring:     { name: 'PZリング',       series: 'PZシリーズ', copy: '着けているだけで回復をサポート', recommend: '全身の総合的なサポートに特におすすめ', points: ['着けるだけ、外すのも簡単', '指から全身の血流をサポート', '24時間つけっぱなしでOK'] },
+  },
   flow: [
-
     // ===== スタート =====
     {
       id: 'greeting',
@@ -77,93 +98,127 @@ let config = {
     // ===== はいルート：何をしているか =====
     {
       id: 'ask_what',
-      message: 'それは素晴らしいですね！\n具体的には何をされていますか？',
+      message: '素晴らしいですね！\n具体的には何をされていますか？',
       key: 'what',
       choices: [
-        { label: '運動（ウォーキング・ジムなど）', next: 'ask_freq' },
-        { label: '食事に気をつけている', next: 'ask_freq' },
-        { label: 'サプリメントを飲んでいる', next: 'ask_freq' },
-        { label: 'その他', next: 'ask_freq' },
+        { label: '運動（ウォーキング・ジムなど）', next: 'ask_detail_exercise' },
+        { label: '食事に気をつけている', next: 'ask_detail_food' },
+        { label: 'サプリメントを飲んでいる', next: 'ask_detail_supple' },
+        { label: 'その他', next: 'ask_detail_other' },
       ]
     },
 
-    // どのくらいの頻度か
+    // 内容：運動
+    { id: 'ask_detail_exercise', message: 'どんな運動をされていますか？', key: 'detail',
+      choices: [{ label: 'ウォーキング・散歩', next: 'ask_freq' }, { label: 'ジム・筋トレ', next: 'ask_freq' }, { label: 'ヨガ・ストレッチ', next: 'ask_freq' }, { label: 'スポーツ', next: 'ask_freq' }] },
+
+    // 内容：食事
+    { id: 'ask_detail_food', message: '特に何を気をつけていますか？', key: 'detail',
+      choices: [{ label: 'カロリー・糖質を控えている', next: 'ask_freq' }, { label: '野菜・栄養バランスを意識', next: 'ask_freq' }, { label: '断食・ファスティング', next: 'ask_freq' }, { label: '食べる時間・量を調整', next: 'ask_freq' }] },
+
+    // 内容：サプリ
+    { id: 'ask_detail_supple', message: 'どんなサプリを飲んでいますか？', key: 'detail',
+      choices: [{ label: 'ビタミン・ミネラル系', next: 'ask_freq' }, { label: 'プロテイン', next: 'ask_freq' }, { label: '美容・コラーゲン系', next: 'ask_freq' }, { label: '健康維持・総合系', next: 'ask_freq' }] },
+
+    // 内容：その他
+    { id: 'ask_detail_other', message: 'どんなことをされていますか？', key: 'detail',
+      choices: [{ label: '睡眠を意識している', next: 'ask_freq' }, { label: 'マッサージ・整体に通っている', next: 'ask_freq' }, { label: '温活・入浴を工夫している', next: 'ask_freq' }, { label: 'その他', next: 'ask_freq' }] },
+
+    // 頻度
     {
       id: 'ask_freq',
       message: 'それはどのくらいの頻度でされていますか？',
       key: 'freq',
       choices: [
-        { label: '毎日できている', next: 'ask_hard' },
-        { label: '週に数回', next: 'ask_hard' },
-        { label: '気が向いたときに', next: 'ask_hard_light' },
+        { label: '毎日できている', next: 'ask_period' },
+        { label: '週に数回', next: 'ask_period' },
+        { label: '気が向いたときに', next: 'ask_period' },
       ]
     },
 
-    // 毎日・週数回 → 大変じゃないか
+    // 期間
+    {
+      id: 'ask_period',
+      message: 'どのくらい続けていますか？',
+      key: 'period',
+      choices: [
+        { label: '始めたばかり（1ヶ月以内）', next: 'ask_hard' },
+        { label: '数ヶ月', next: 'ask_hard' },
+        { label: '半年以上', next: 'ask_hard' },
+        { label: '1年以上', next: 'ask_hard' },
+      ]
+    },
+
+    // 大変か
     {
       id: 'ask_hard',
-      message: 'すごいですね、続けていらっしゃるんですね。\n\n正直なところ、大変だなと感じることはありますか？',
+      message: '続けていらっしゃるんですね。\n正直なところ、大変だなと感じることはありますか？',
       key: 'hard',
       choices: [
-        { label: '大変なこともある、正直面倒なときも', next: 'proposal' },
-        { label: '習慣になっているので大丈夫', next: 'proposal_plus' },
+        { label: '面倒なときもある', next: 'ask_symptom' },
+        { label: 'なかなか続かない', next: 'ask_symptom' },
+        { label: '習慣になっているので大丈夫', next: 'ask_symptom' },
       ]
     },
 
-    // 気が向いたとき → なかなか続かない確認
-    {
-      id: 'ask_hard_light',
-      message: 'なかなか続けるって難しいですよね。\n\n続けられない理由って、何かありますか？',
-      key: 'hard',
-      choices: [
-        { label: '面倒になってしまう', next: 'proposal' },
-        { label: 'やる気が出ないときがある', next: 'proposal' },
-        { label: '忙しくて時間がとれない', next: 'proposal' },
-      ]
-    },
-
-    // ===== いいえルート：なぜしていないか =====
-    {
-      id: 'ask_why_not',
-      message: 'そうなんですね。\n\n何かしたいとは思っているけど、\nなかなかできていない感じですか？',
-      key: 'why_not',
-      choices: [
-        { label: 'そう、何から始めればいいかわからない', next: 'ask_symptom' },
-        { label: '面倒だし、続く気がしない', next: 'ask_symptom' },
-        { label: 'そこまで気にしていない', next: 'reframe' },
-      ]
-    },
-
-    // 気になる症状を聞く（いいえルート）
+    // ===== 症状確認（両ルート共通） =====
     {
       id: 'ask_symptom',
       message: 'ちなみに、最近こんなこと感じませんか？',
       key: 'symptom',
       choices: [
-        { label: '疲れやすくなった気がする', next: 'proposal' },
-        { label: '手足が冷えやすい', next: 'proposal' },
-        { label: '睡眠が浅い・疲れが取れにくい', next: 'proposal' },
-        { label: '特に感じない', next: 'proposal_light' },
+        { label: '手足の冷えが気になる', next: 'teaser' },
+        { label: '疲れやすい・肩こりがある', next: 'teaser' },
+        { label: '全身的にだるい・重い', next: 'teaser' },
+        { label: '特に感じない', next: 'teaser' },
       ]
     },
 
-    // 全く関心がない → 切り口を変える
+    // ===== いいえルート =====
+    {
+      id: 'ask_why_not',
+      message: 'そうなんですね。\n何かしたいとは思っているけど、\nなかなかできていない感じですか？',
+      key: 'why_not',
+      choices: [
+        { label: '何から始めればいいかわからない', next: 'ask_symptom' },
+        { label: '面倒だし、続く気がしない', next: 'ask_symptom' },
+        { label: 'そこまで気にしていない', next: 'reframe' },
+      ]
+    },
+
+    // 関心薄い → 切り口変える
     {
       id: 'reframe',
-      message: 'そうなんですね。\n\n最近、体が重いとか、疲れやすいとか\n感じることはありますか？',
+      message: 'そうなんですね。\n最近、体が重いとか、疲れやすいとか\n感じることはありますか？',
       key: 'reframe',
       choices: [
         { label: 'そう言われると、ちょっとある', next: 'ask_symptom' },
-        { label: 'あまりない', next: 'proposal_light' },
+        { label: 'あまりない', next: 'ask_symptom' },
       ]
     },
 
-    // ===== 提案ステップ（isProposalフラグで分岐） =====
-    { id: 'proposal',       isProposal: true, proposalType: 'main' },
-    { id: 'proposal_plus',  isProposal: true, proposalType: 'plus' },
-    { id: 'proposal_light', isProposal: true, proposalType: 'light' },
+    // ===== 提案テーザー・製品カードはJS関数で処理 =====
+    { id: 'teaser', isTeaser: true },
   ]
 };
+
+// ===== 製品選択ロジック =====
+function getRecommendedProduct() {
+  const symptom = answers.symptom || '';
+  if (symptom.includes('冷え')) return config.products.anklet;
+  if (symptom.includes('疲れ') || symptom.includes('肩こり')) return config.products.bracelet;
+  return config.products.ring;
+}
+
+function getSubProducts() {
+  const symptom = answers.symptom || '';
+  const all = ['anklet', 'bracelet', 'ring'];
+  let main;
+  if (symptom.includes('冷え')) main = 'anklet';
+  else if (symptom.includes('疲れ') || symptom.includes('肩こり')) main = 'bracelet';
+  else main = 'ring';
+  return all.filter(k => k !== main).map(k => config.products[k]);
+}
 
 // ===== 更新ボタン =====
 async function updateContent() {
@@ -209,79 +264,57 @@ function showTyping(ms=700) {
 
 function scroll() { window.scrollTo(0, document.body.scrollHeight); }
 
-// ===== 提案メッセージ =====
-function getProposalMessage(type) {
-  const what = answers.what ? `${answers.what}を` : '健康のために';
-  if (type === 'plus') {
-    return `${what}毎日続けていらっしゃるんですね、素晴らしいです。\n\nそれに加えて、着けているだけでサポートできるものがあったら、もっと楽になりませんか？\n\n着脱もとっても簡単なので、今の習慣のじゃまをしません。`;
-  }
-  if (type === 'light') {
-    return `無理してやる必要はないですよね。\n\nただ、着けているだけでいいし、着脱もとっても簡単なものがあるとしたら、試してみる価値はあると思いませんか？`;
-  }
-  // main（面倒・続かない系）
-  const hard = answers.hard || '';
-  if (hard) {
-    return `${hard}、そうですよね。\n\nだったら、着けているだけでいいものはどうですか？\n\n努力も面倒もいりません。着脱もとっても簡単です。`;
-  }
-  return `健康のために何かしたいけど、なかなか続けるのって大変ですよね。\n\nだったら、着けているだけでいいものはどうですか？\n\n努力も面倒もいりません。着脱もとっても簡単です。`;
-}
-
-// ===== 提案カード表示 =====
-async function showProposal(type='main') {
-  const p = config.product || { name: '247', copy: 'つけているだけで血流をサポート' };
-
+// ===== テーザー表示 =====
+async function showTeaser() {
   await showTyping(800);
-  await addBubble(getProposalMessage(type), 'ai');
-  await showTyping(600);
 
   const card = document.createElement('div');
-  card.className = 'proposal-card';
+  card.className = 'teaser-card';
   card.innerHTML = `
-    <div class="proposal-label">ご提案</div>
-    <div class="proposal-name">${p.name}</div>
-    <div class="proposal-copy">${p.copy}</div>
-    <div class="proposal-reason">
-      <div class="proposal-reason-label">ポイント</div>
-      着けるだけ。外すのも簡単。努力も面倒もいりません。
+    <div class="teaser-text">着けているだけで\n回復をサポートできるものがあります。</div>
+    <button class="teaser-btn" id="teaser-btn">詳しく見る</button>
+  `;
+  app.appendChild(card); scroll();
+
+  document.getElementById('teaser-btn').onclick = async () => {
+    document.getElementById('teaser-btn').disabled = true;
+    await addBubble('詳しく見る', 'user');
+    await showProductCard();
+  };
+}
+
+// ===== 製品カード表示 =====
+async function showProductCard() {
+  await showTyping(700);
+
+  const main = getRecommendedProduct();
+  const subs = getSubProducts();
+
+  const card = document.createElement('div');
+  card.className = 'product-card';
+
+  const pointsHtml = main.points.map(p => `<div class="product-point">${p}</div>`).join('');
+  const subsHtml = subs.map(s => `<span style="font-weight:600;">${s.name}</span>`).join('・');
+
+  card.innerHTML = `
+    <div class="product-badge">あなたへのご提案</div>
+    <div class="product-series">${main.series}</div>
+    <div class="product-name">${main.name}</div>
+    <div class="product-copy">${main.copy}</div>
+    <div class="product-points">
+      <div class="product-points-label">ポイント</div>
+      ${pointsHtml}
+    </div>
+    <div class="product-sub">
+      <div class="product-sub-label">その他のラインナップ</div>
+      ${subsHtml}
     </div>
   `;
   app.appendChild(card); scroll();
 
   await showTyping(600);
-  await addBubble('試してみませんか？', 'ai');
-
-  setTimeout(() => {
-    const div = document.createElement('div');
-    div.className = 'choices';
-    [
-      { label: 'はい、試してみます', go: true },
-      { label: 'もう少し聞かせてください', go: false }
-    ].forEach(c => {
-      const btn = document.createElement('button');
-      btn.className = 'choice-btn';
-      btn.textContent = c.label;
-      btn.onclick = async () => {
-        div.remove();
-        await addBubble(c.label, 'user');
-        if (c.go) {
-          await showMeasure();
-        } else {
-          await showTyping(600);
-          await addBubble('着けているだけで体の血流をサポートします。\n実際に変化があるかどうか、確認できる機器もあります。\n試してみるのが一番わかりやすいですよ。', 'ai');
-          await showTyping(500);
-          await showMeasure();
-        }
-      };
-      div.appendChild(btn);
-    });
-    app.appendChild(div); scroll();
-  }, 400);
-}
-
-// ===== ④ 測定誘導 =====
-async function showMeasure() {
-  await showTyping(600);
   await addBubble('実際に変化があるかどうか、\n確認できる機器があります。\n一緒に見てみましょう！', 'ai');
+
   setTimeout(() => {
     const btn = document.createElement('button');
     btn.className = 'measure-btn';
@@ -299,13 +332,15 @@ async function showHandover() {
 
   setTimeout(() => {
     const labels = {
-      doing:    '取り組み状況',
-      what:     '取り組みの内容',
-      freq:     '頻度',
-      hard:     '負担・継続の課題',
-      why_not:  '取り組まない理由',
-      symptom:  '気になる症状',
-      reframe:  '体の状態',
+      doing:   '取り組み状況',
+      what:    '取り組みの種類',
+      detail:  '取り組みの内容',
+      freq:    '頻度',
+      period:  '継続期間',
+      hard:    '負担・継続の課題',
+      why_not: '取り組まない理由',
+      symptom: '気になる症状',
+      reframe: '体の状態',
     };
     const card = document.createElement('div');
     card.className = 'summary-card';
@@ -319,11 +354,17 @@ async function showHandover() {
       }
     });
 
+    // 提案製品
+    const main = getRecommendedProduct();
+    const recItem = document.createElement('div');
+    recItem.className = 'summary-item';
+    recItem.innerHTML = `<div class="summary-label">提案製品</div><div class="summary-value">${main.name}</div>`;
+    card.appendChild(recItem);
+
     // 販売員への一言
-    const line = buildOpeningLine();
     const sc = document.createElement('div');
     sc.style.cssText = 'margin-top:12px;background:#fff8f0;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;color:#1a1a1a;';
-    sc.innerHTML = `<div style="font-size:11px;color:#e07020;font-weight:600;margin-bottom:4px;">最初のひと言</div>${line}`;
+    sc.innerHTML = `<div style="font-size:11px;color:#e07020;font-weight:600;margin-bottom:4px;">最初のひと言</div>${buildOpeningLine()}`;
     card.appendChild(sc);
 
     const btn = document.createElement('button');
@@ -336,14 +377,15 @@ async function showHandover() {
 }
 
 function buildOpeningLine() {
-  if (answers.what) {
+  const main = getRecommendedProduct();
+  if (answers.what && answers.detail) {
     const hard = answers.hard ? `、${answers.hard}とのことでした` : '';
-    return `「${answers.what}に取り組んでいらっしゃる方で${hard}。着けるだけで続けられるものをご提案しました。測定で実際の変化を確認してみましょう」`;
+    return `「${answers.what}（${answers.detail}）に取り組んでいらっしゃる方で${hard}。${main.name}をご提案しました。測定で実際の変化を確認してみましょう」`;
   }
   if (answers.symptom) {
-    return `「${answers.symptom}とのことでした。着けるだけでサポートできるものをご提案しました。測定で実際の変化を確認してみましょう」`;
+    return `「${answers.symptom}とのことでした。${main.name}をご提案しました。測定で実際の変化を確認してみましょう」`;
   }
-  return `「健康に関心をお持ちの方です。着けるだけでサポートできるものをご提案しました。測定で実際の変化を確認してみましょう」`;
+  return `「${main.name}をご提案しました。測定で実際の変化を確認してみましょう」`;
 }
 
 // ===== 会話エンジン =====
@@ -368,7 +410,7 @@ function addChoices(step) {
 async function goTo(id) {
   const step = getFlowMap()[id];
   if (!step) return;
-  if (step.isProposal) { await showProposal(step.proposalType || 'main'); return; }
+  if (step.isTeaser) { await showTeaser(); return; }
   await showTyping(650);
   await addBubble(step.message, 'ai');
   addChoices(step);
