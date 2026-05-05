@@ -25,14 +25,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 .choices { display: flex; flex-direction: column; gap: 9px; width: 92%; }
 .choice-btn { background: #fff; border: 1px solid #e0ddd6; border-radius: 13px; padding: 12px 17px; font-size: 15px; color: #1a1a1a; cursor: pointer; text-align: left; line-height: 1.5; font-family: inherit; transition: border-color 0.15s, background 0.15s; }
 .choice-btn:hover, .choice-btn:active { background: #f0faf6; border-color: #1D9E75; }
-
-/* 提案テーザー */
 .teaser-card { background: #fff; border-radius: 14px; padding: 1.2rem 1.4rem; width: 92%; box-shadow: 0 1px 4px rgba(0,0,0,0.09); animation: fadeIn 0.4s ease; }
 .teaser-text { font-size: 16px; font-weight: 600; color: #1a1a1a; line-height: 1.6; margin-bottom: 14px; }
 .teaser-btn { background: #1D9E75; color: #fff; border: none; border-radius: 11px; padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; width: 100%; }
 .teaser-btn:active { opacity: 0.85; }
-
-/* 製品カード */
 .product-card { background: #fff; border: 2px solid #1D9E75; border-radius: 16px; padding: 1.4rem; width: 92%; animation: fadeIn 0.4s ease; }
 .product-badge { display: inline-block; background: #1D9E75; color: #fff; font-size: 11px; font-weight: 600; border-radius: 6px; padding: 3px 10px; margin-bottom: 10px; letter-spacing: 0.06em; }
 .product-series { font-size: 13px; color: #888; margin-bottom: 2px; }
@@ -44,12 +40,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 .product-point::before { content: '・'; color: #1D9E75; }
 .product-sub { margin-top: 12px; background: #f9f9f7; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #666; line-height: 1.6; }
 .product-sub-label { font-size: 11px; color: #aaa; font-weight: 600; margin-bottom: 4px; }
-
-/* 測定ボタン */
 .measure-btn { background: #1D9E75; color: #fff; border: none; border-radius: 13px; padding: 15px 20px; font-size: 16px; font-weight: 600; cursor: pointer; width: 92%; font-family: inherit; margin-top: 4px; animation: fadeIn 0.4s ease; }
 .measure-btn:active { opacity: 0.85; }
-
-/* サマリー */
 .summary-card { background: #fff; border: 1px solid #e0ddd6; border-radius: 14px; padding: 1.25rem; width: 92%; animation: fadeIn 0.4s ease; }
 .summary-card h3 { font-size: 11px; font-weight: 600; color: #999; margin-bottom: 10px; letter-spacing: 0.08em; }
 .summary-item { font-size: 14px; color: #1a1a1a; padding: 7px 0; border-bottom: 1px solid #f0ede8; }
@@ -57,7 +49,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Goth
 .summary-label { font-size: 11px; color: #888; margin-bottom: 2px; }
 .summary-value { font-weight: 500; }
 #restart-btn { margin-top: 1rem; background: transparent; border: 1px solid #d0cdc6; border-radius: 10px; padding: 10px 20px; font-size: 14px; color: #666; cursor: pointer; font-family: inherit; display: block; width: 100%; }
-
 .dot-row { display: flex; gap: 5px; padding: 14px 18px; background: #fff; border-radius: 4px 18px 18px 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.09); width: fit-content; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: #bbb; animation: bounce 1.1s infinite; }
 .dot:nth-child(2) { animation-delay: 0.18s; }
@@ -79,19 +70,55 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
 let config = {
   products: {
-    anklet:   { name: 'PZアンクレット', series: 'PZシリーズ', copy: '着けているだけで回復をサポート', recommend: '冷えが気になる方に特におすすめ', points: ['着けるだけ、外すのも簡単', '足首から全身の血流をサポート', '24時間つけっぱなしでOK'] },
-    bracelet: { name: 'PZブレスレット', series: 'PZシリーズ', copy: '着けているだけで回復をサポート', recommend: '疲れ・肩こりが気になる方に特におすすめ', points: ['着けるだけ、外すのも簡単', '手首から上半身の血流をサポート', '24時間つけっぱなしでOK'] },
-    ring:     { name: 'PZリング',       series: 'PZシリーズ', copy: '着けているだけで回復をサポート', recommend: '全身の総合的なサポートに特におすすめ', points: ['着けるだけ、外すのも簡単', '指から全身の血流をサポート', '24時間つけっぱなしでOK'] },
+    anklet:   { name: 'PZアンクレット', series: 'PZシリーズ', copy: '着けているだけで回復をサポート', points: ['着けるだけ、外すのも簡単', '足首から全身の血流をサポート', '24時間つけっぱなしでOK'] },
+    bracelet: { name: 'PZブレスレット', series: 'PZシリーズ', copy: '着けているだけで回復をサポート', points: ['着けるだけ、外すのも簡単', '手首から上半身の血流をサポート', '24時間つけっぱなしでOK'] },
+    ring:     { name: 'PZリング',       series: 'PZシリーズ', copy: '着けているだけで回復をサポート', points: ['着けるだけ、外すのも簡単', '指から全身の血流をサポート', '24時間つけっぱなしでOK'] },
   },
   flow: [
-    // ===== スタート =====
+
+    // ===== ① 体の気になること =====
     {
       id: 'greeting',
-      message: '健康について、今そしてこれからのために\n何か取り組んでいることはありますか？',
+      message: '最近、体で気になることはありますか？',
+      key: 'has_symptom',
+      choices: [
+        { label: 'ある', next: 'ask_symptom' },
+        { label: 'ない', next: 'ask_effort_health' },
+      ]
+    },
+
+    // 症状を聞く
+    {
+      id: 'ask_symptom',
+      message: 'どんなことが気になっていますか？',
+      key: 'symptom',
+      choices: [
+        { label: '手足の冷えが気になる', next: 'ask_effort_symptom' },
+        { label: '疲れやすい・疲れが取れない', next: 'ask_effort_symptom' },
+        { label: '肩こり・首こりがある', next: 'ask_effort_symptom' },
+        { label: '全身がだるい・重い', next: 'ask_effort_symptom' },
+      ]
+    },
+
+    // 症状あり → その症状のために取り組んでいるか
+    {
+      id: 'ask_effort_symptom',
+      message: 'そうなんですね。\nそのために、何か取り組んでいることはありますか？',
       key: 'doing',
       choices: [
         { label: 'はい、取り組んでいます', next: 'ask_what' },
-        { label: 'いいえ、特にしていません', next: 'ask_why_not' },
+        { label: 'いいえ、特にしていません', next: 'ask_want_to' },
+      ]
+    },
+
+    // 症状なし → 健康のために取り組んでいるか
+    {
+      id: 'ask_effort_health',
+      message: '健康のために、今そしてこれからのために\n何か取り組んでいることはありますか？',
+      key: 'doing',
+      choices: [
+        { label: 'はい、取り組んでいます', next: 'ask_what' },
+        { label: 'いいえ、特にしていません', next: 'ask_want_to' },
       ]
     },
 
@@ -125,75 +152,26 @@ let config = {
       choices: [{ label: '睡眠を意識している', next: 'ask_freq' }, { label: 'マッサージ・整体に通っている', next: 'ask_freq' }, { label: '温活・入浴を工夫している', next: 'ask_freq' }, { label: 'その他', next: 'ask_freq' }] },
 
     // 頻度
-    {
-      id: 'ask_freq',
-      message: 'それはどのくらいの頻度でされていますか？',
-      key: 'freq',
-      choices: [
-        { label: '毎日できている', next: 'ask_period' },
-        { label: '週に数回', next: 'ask_period' },
-        { label: '気が向いたときに', next: 'ask_period' },
-      ]
-    },
+    { id: 'ask_freq', message: 'それはどのくらいの頻度でされていますか？', key: 'freq',
+      choices: [{ label: '毎日できている', next: 'ask_period' }, { label: '週に数回', next: 'ask_period' }, { label: '気が向いたときに', next: 'ask_period' }] },
 
     // 期間
-    {
-      id: 'ask_period',
-      message: 'どのくらい続けていますか？',
-      key: 'period',
-      choices: [
-        { label: '始めたばかり（1ヶ月以内）', next: 'ask_hard' },
-        { label: '数ヶ月', next: 'ask_hard' },
-        { label: '半年以上', next: 'ask_hard' },
-        { label: '1年以上', next: 'ask_hard' },
-      ]
-    },
+    { id: 'ask_period', message: 'どのくらい続けていますか？', key: 'period',
+      choices: [{ label: '始めたばかり（1ヶ月以内）', next: 'ask_hard' }, { label: '数ヶ月', next: 'ask_hard' }, { label: '半年以上', next: 'ask_hard' }, { label: '1年以上', next: 'ask_hard' }] },
 
-    // 大変か
-    {
-      id: 'ask_hard',
-      message: '続けていらっしゃるんですね。\n正直なところ、大変だなと感じることはありますか？',
-      key: 'hard',
-      choices: [
-        { label: '面倒なときもある', next: 'ask_symptom' },
-        { label: 'なかなか続かない', next: 'ask_symptom' },
-        { label: '習慣になっているので大丈夫', next: 'ask_symptom' },
-      ]
-    },
+    // 大変か → テーザーへ
+    { id: 'ask_hard', message: '続けていらっしゃるんですね。\n正直なところ、大変だなと感じることはありますか？', key: 'hard',
+      choices: [{ label: '面倒なときもある', next: 'teaser' }, { label: 'なかなか続かない', next: 'teaser' }, { label: '習慣になっているので大丈夫', next: 'teaser' }] },
 
-    // ===== 症状確認（両ルート共通） =====
+    // ===== いいえルート：したいけどできていない =====
     {
-      id: 'ask_symptom',
-      message: 'ちなみに、最近こんなこと感じませんか？',
-      key: 'symptom',
-      choices: [
-        { label: '手足の冷えが気になる', next: 'teaser' },
-        { label: '疲れやすい・肩こりがある', next: 'teaser' },
-        { label: '全身的にだるい・重い', next: 'teaser' },
-        { label: '特に感じない', next: 'teaser' },
-      ]
-    },
-
-    // ===== いいえルート =====
-    {
-      id: 'ask_why_not',
+      id: 'ask_want_to',
       message: 'そうなんですね。\n何かしたいとは思っているけど、\nなかなかできていない感じですか？',
-      key: 'why_not',
+      key: 'want_to',
       choices: [
-        { label: '何から始めればいいかわからない', next: 'ask_symptom' },
-        { label: '面倒だし、続く気がしない', next: 'ask_symptom' },
-        { label: 'そこまで気にしていない', next: 'reframe' },
-      ]
-    },
-
-    // 関心薄い → 切り口変える
-    {
-      id: 'reframe',
-      message: 'そうなんですね。\n最近、体が重いとか、疲れやすいとか\n感じることはありますか？',
-      key: 'reframe',
-      choices: [
-        { label: 'そう言われると、ちょっとある', next: 'ask_symptom' },
-        { label: 'あまりない', next: 'ask_symptom' },
+        { label: '何から始めればいいかわからない', next: 'teaser' },
+        { label: '面倒だし、続く気がしない', next: 'teaser' },
+        { label: 'そこまで考えていなかった', next: 'teaser' },
       ]
     },
 
@@ -212,12 +190,11 @@ function getRecommendedProduct() {
 
 function getSubProducts() {
   const symptom = answers.symptom || '';
-  const all = ['anklet', 'bracelet', 'ring'];
   let main;
   if (symptom.includes('冷え')) main = 'anklet';
   else if (symptom.includes('疲れ') || symptom.includes('肩こり')) main = 'bracelet';
   else main = 'ring';
-  return all.filter(k => k !== main).map(k => config.products[k]);
+  return ['anklet', 'bracelet', 'ring'].filter(k => k !== main).map(k => config.products[k]);
 }
 
 // ===== 更新ボタン =====
@@ -264,10 +241,9 @@ function showTyping(ms=700) {
 
 function scroll() { window.scrollTo(0, document.body.scrollHeight); }
 
-// ===== テーザー表示 =====
+// ===== テーザー =====
 async function showTeaser() {
   await showTyping(800);
-
   const card = document.createElement('div');
   card.className = 'teaser-card';
   card.innerHTML = `
@@ -275,7 +251,6 @@ async function showTeaser() {
     <button class="teaser-btn" id="teaser-btn">詳しく見る</button>
   `;
   app.appendChild(card); scroll();
-
   document.getElementById('teaser-btn').onclick = async () => {
     document.getElementById('teaser-btn').disabled = true;
     await addBubble('詳しく見る', 'user');
@@ -283,19 +258,15 @@ async function showTeaser() {
   };
 }
 
-// ===== 製品カード表示 =====
+// ===== 製品カード =====
 async function showProductCard() {
   await showTyping(700);
-
   const main = getRecommendedProduct();
   const subs = getSubProducts();
-
   const card = document.createElement('div');
   card.className = 'product-card';
-
   const pointsHtml = main.points.map(p => `<div class="product-point">${p}</div>`).join('');
   const subsHtml = subs.map(s => `<span style="font-weight:600;">${s.name}</span>`).join('・');
-
   card.innerHTML = `
     <div class="product-badge">あなたへのご提案</div>
     <div class="product-series">${main.series}</div>
@@ -311,14 +282,12 @@ async function showProductCard() {
     </div>
   `;
   app.appendChild(card); scroll();
-
   await showTyping(600);
-  await addBubble('実際に変化があるかどうか、\n確認できる機器があります。\n一緒に見てみましょう！', 'ai');
-
+  await addBubble('実際に体温の変化を\n一緒に見てみましょう！', 'ai');
   setTimeout(() => {
     const btn = document.createElement('button');
     btn.className = 'measure-btn';
-    btn.textContent = '測定してみる';
+    btn.textContent = '体温の変化を見てみます';
     btn.onclick = () => { btn.remove(); showHandover(); };
     app.appendChild(btn); scroll();
   }, 400);
@@ -326,21 +295,20 @@ async function showProductCard() {
 
 // ===== 販売員サマリー =====
 async function showHandover() {
-  await addBubble('測定してみます', 'user');
+  await addBubble('体温の変化を見てみます', 'user');
   await showTyping(600);
   await addBubble('ありがとうございます！\nでは担当者をお呼びします。\nそのままお待ちください。', 'ai');
-
   setTimeout(() => {
     const labels = {
-      doing:   '取り組み状況',
-      what:    '取り組みの種類',
-      detail:  '取り組みの内容',
-      freq:    '頻度',
-      period:  '継続期間',
-      hard:    '負担・継続の課題',
-      why_not: '取り組まない理由',
-      symptom: '気になる症状',
-      reframe: '体の状態',
+      has_symptom: '体の気になること',
+      symptom:     '気になる症状',
+      doing:       '取り組み状況',
+      what:        '取り組みの種類',
+      detail:      '取り組みの内容',
+      freq:        '頻度',
+      period:      '継続期間',
+      hard:        '負担・継続の課題',
+      want_to:     '取り組まない理由',
     };
     const card = document.createElement('div');
     card.className = 'summary-card';
@@ -353,15 +321,12 @@ async function showHandover() {
         card.appendChild(item);
       }
     });
-
-    // 提案製品
     const main = getRecommendedProduct();
     const recItem = document.createElement('div');
     recItem.className = 'summary-item';
     recItem.innerHTML = `<div class="summary-label">提案製品</div><div class="summary-value">${main.name}</div>`;
     card.appendChild(recItem);
 
-    // 販売員への一言
     const sc = document.createElement('div');
     sc.style.cssText = 'margin-top:12px;background:#fff8f0;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;color:#1a1a1a;';
     sc.innerHTML = `<div style="font-size:11px;color:#e07020;font-weight:600;margin-bottom:4px;">最初のひと言</div>${buildOpeningLine()}`;
@@ -378,14 +343,18 @@ async function showHandover() {
 
 function buildOpeningLine() {
   const main = getRecommendedProduct();
-  if (answers.what && answers.detail) {
+  if (answers.symptom && answers.what) {
     const hard = answers.hard ? `、${answers.hard}とのことでした` : '';
-    return `「${answers.what}（${answers.detail}）に取り組んでいらっしゃる方で${hard}。${main.name}をご提案しました。測定で実際の変化を確認してみましょう」`;
+    return `「${answers.symptom}があって、${answers.what}に取り組んでいらっしゃる方です${hard}。${main.name}をご提案しました。体温の変化を一緒に確認してみましょう」`;
   }
   if (answers.symptom) {
-    return `「${answers.symptom}とのことでした。${main.name}をご提案しました。測定で実際の変化を確認してみましょう」`;
+    return `「${answers.symptom}が気になっている方です。${main.name}をご提案しました。体温の変化を一緒に確認してみましょう」`;
   }
-  return `「${main.name}をご提案しました。測定で実際の変化を確認してみましょう」`;
+  if (answers.what) {
+    const hard = answers.hard ? `、${answers.hard}とのことでした` : '';
+    return `「${answers.what}に取り組んでいらっしゃる方です${hard}。${main.name}をご提案しました。体温の変化を一緒に確認してみましょう」`;
+  }
+  return `「${main.name}をご提案しました。体温の変化を一緒に確認してみましょう」`;
 }
 
 // ===== 会話エンジン =====
